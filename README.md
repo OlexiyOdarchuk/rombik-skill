@@ -32,7 +32,9 @@ Or copy this directory into your agent's skills folder manually.
 
 The always-current version of this skill is served by the API itself:
 [`https://rombik.app/api/v1/skill.md`](https://rombik.app/api/v1/skill.md)
-(`?lang=uk` for Ukrainian). This repository mirrors it in the standard Agent Skills layout.
+(`?lang=uk` for Ukrainian). This repository mirrors it in the standard Agent Skills layout and
+stays in sync automatically: every rombik deploy triggers the
+[sync workflow](.github/workflows/sync.yml) (`scripts/sync.py`), with a daily cron as a fallback.
 
 Machine-readable API spec: [OpenAPI 3.1](https://rombik.app/api/v1/openapi.json) ·
 Developer docs: [rombik.app/developers](https://rombik.app/developers)
