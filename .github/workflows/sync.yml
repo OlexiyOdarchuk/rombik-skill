@@ -1,9 +1,7 @@
 name: Sync skill from rombik.app
 
 on:
-  schedule:
-    - cron: "17 6 * * *" # щодня; джерело — https://rombik.app/api/v1/skill.md
-  workflow_dispatch:
+  workflow_dispatch: # смикається з `make deploy` у rombik-app після smoke-чеку
 
 permissions:
   contents: write
