@@ -26,7 +26,7 @@ curl -fsSL https://rombik.app/install.sh | sh   # macOS/Linux → ~/.local/bin
 rombik auth                                # log in via browser (or: rombik auth rk_…)
 ```
 Then use commands WITHOUT passing the key as an argument (it is read from the config):
-- `rombik render main.py -f pdf -o out.pdf` — file/stdin/`--url` → chart
+- `rombik render main.py -f pdf -o out.pdf` — file/stdin/`--url` → chart; `--link` — also a temporary public link to the result (valid 1h)
 - `rombik batch src/*.py -f pdf -o project.pdf` — many sources at once
 - `rombik me` · `rombik products` · `rombik topup` · `rombik gift --email … --qty …`
 - `rombik version --json` → `{version,latest,updateAvailable}`; `rombik update` — update the CLI to the latest version
