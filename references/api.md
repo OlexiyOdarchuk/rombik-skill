@@ -13,14 +13,23 @@ Header (either of the two):
 
 Create a key in your account on the site (shown once).
 
+## Sign in with rombik — when you build an app for OTHER people
+Do not ask users to paste a key by hand: rombik issues one itself after their consent (OAuth 2.0 + OIDC, any standard library works).
+1. `POST /oauth/register` `{ "client_name": "…", "redirect_uris": ["https://…/callback"], "token_endpoint_auth_method": "none" }` → `client_id` (plus `client_secret` unless the method is `none`).
+2. Send the user to https://rombik.app/oauth/authorize?response_type=code&client_id=…&redirect_uri=…&scope=openid%20email%20api&state=…&code_challenge=…&code_challenge_method=S256 — they click "Allow" and come back to `redirect_uri` with a `code`.
+3. `POST /oauth/token` (form-urlencoded: grant_type=authorization_code, code, redirect_uri, client_id, code_verifier) → `access_token` is the `rk_…` key for every endpoint below; with scope `openid` you also get an `id_token` (RS256; keys at `GET /oauth/jwks`, identity at `GET /oauth/userinfo`).
+
+PKCE S256 is MANDATORY for a client without a secret; `redirect_uri` must be https (http allowed on localhost) and identical in steps 2 and 3; the code lives 10 minutes and works once. Rendering spends credits of the ACCOUNT OWNER who consented; they revoke access in their account (the key disappears → 401).
+Discovery metadata: https://rombik.app/.well-known/oauth-authorization-server and https://rombik.app/.well-known/openid-configuration
+
 ## Endpoints
 
 ### POST /render — code → flowchart (1 export — 1 credit)
 JSON body: `{ "code": "...", "lang": "python", "format": "svg" }`
 - `lang`: python | cpp | c | java | csharp | pascal | javascript | typescript | php | go | rombik (Pro: `code` carries a ready astJSON tree instead of source code; spec in the format section below)
-- `format`: docx | visio | drawio | typst | excalidraw | svg | png | pdf | json | poster (svg by default). poster — code on the left, chart on the right, as one shareable image (styling goes in the poster block; works together with mode:"nsd" and options.locale). `docx` — Word with native shapes; `visio` — .vsdx native shapes; `drawio` — editable diagrams.net; `json` — raw Diagram geometry.
+- `format`: docx | visio | drawio | typst | excalidraw | svg | png | jpeg | webp | gif | gif_anim | html | pdf | json | poster (svg by default). jpeg/webp/gif — the same raster as png (webp is lossless); gif_anim — an animated GIF, the chart draws itself block by block; html — a self-contained page "chart + code with line numbers". poster — code on the left, chart on the right, as one shareable image (styling goes in the poster block; works together with mode:"nsd" and options.locale). `docx` — Word with native shapes; `visio` — .vsdx native shapes; `drawio` — editable diagrams.net; `json` — raw Diagram geometry.
 - `mode`: empty — flowchart (default); `nsd` — Nassi-Shneiderman structogram (nested boxes, no arrows) in any format.
-- `split` (default true for docx, PDF & Typst document; for svg/png/excalidraw — with explicit true): split tall charts into parts with А/Б connectors. For docx/pdf/typst these are separate pages (pdf is multi-page); for svg/png/excalidraw — parts on one canvas. `false` — keep continuous (one sheet)
+- `split` (default true for docx, PDF & Typst document; for svg/png/jpeg/webp/gif/html/excalidraw — with explicit true): split tall charts into parts with А/Б connectors. For docx/pdf/typst these are separate pages (pdf is multi-page); for svg/png/excalidraw — parts on one canvas. `false` — keep continuous (one sheet)
 - `url`: instead of `code` — a link to a file (allowlist: raw.githubusercontent.com, gist, gitlab.com, bitbucket.org, codeberg.org; `github.com/.../blob/...` auto→raw). Language is inferred from the extension.
 - optional: `fn` (only the function with this name), `scale` (PNG zoom), `fragment` (Typst fragment), `font`, `options` (object — full list in the «Engine options» section below)
 - `options` with custom words/caption/for-format require an account with active **Pro** (otherwise 402 `pro_required`). Toggles, `locale`, `font`, `scale`, `figStart` are free.
@@ -59,6 +68,11 @@ Example (file): `curl -X POST https://rombik.app/api/v1/render -H "X-API-Key: rk
 - `{ "email": "friend@example.com", "qty": 5 }` — deducts 5 credits from you, adds them to your friend.
 - If the recipient has no account yet — it is created by email (credits wait for first sign-in). They get an email and an in-account notification.
 → `{ ok, credits }` (your new balance). Errors: `gift_failed` (400, e.g. not enough credits), `bad_email`, `bad_qty`.
+
+### POST /r — temporary public link to a result (1 hour)
+When your client cannot display files (chat, webhook, email) — hand the user a link instead of bytes.
+- The body is the FILE itself (bytes from /render), `Content-Type` is its MIME; `?name=schema.pdf` sets the download name.
+→ `{ url, expiresIn }`. Images and PDFs open in the browser, everything else downloads. The CLI does the same with `--link`.
 
 ## Engine options — the `options` object on /render and /render/batch
 Powerful tuning of the chart to the requirements (teacher/standard). Use them freely.
