@@ -62,7 +62,7 @@ Example (file): `curl -X POST https://rombik.app/api/v1/render -H "X-API-Key: rk
 - optional `"provider": "paddle"` in the request — USD (international) payment via Paddle when the plan has `paddle:true` in /products. The response differs: a Paddle.js checkout config (`priceId`, `clientToken`, …) without `payUrl` — meant for the web; from CLI/agents use the default (UAH).
 
 ### GET /products — plan catalog
-→ `{ plans:[{id,code,days,name,nameEn,chat,uah,usd,paddle}], freeExportsMonthly, fairUseMonthly, available, provider, paddle }`
+→ `{ plans:[{id,code,days,name,nameEn,chat,uah,usd,paddle}], freeExportsMonthly, fairUseMonthly, proFairUseMonthly, available, provider, paddle }`
 - `code`: `student` | `pro` — personal (bought via /topup); `group` | `stream` (`chat:true`) — Telegram chat plans, bought in the bot or as a voucher on the site.
 - `available:false` → payment temporarily unavailable; `provider` — the active UAH provider (plata|jar).
 
@@ -101,10 +101,10 @@ In the CLI these are flags: --locale, --for-format, --single-end, --yes/--no, --
 ## Errors
 Body `{ error, code }`. Branch on `code` (stable), not on text:
 - `unauthorized` (401) — bad/missing key
+- `pro_required` (402) — rendering by key without the Pro plan, or custom Pro options; the `proFeatures` field lists which → /products, /topup
 - `no_credits` (402) — this month's free export is used up → /topup
 - `fair_use` (402) — the plan's monthly export limit is reached; the counter resets on the 1st
 - `plan_conflict` (409) — on /topup: Student while Pro is active
-- `pro_required` (402) — custom Pro options without active Pro; the `proFeatures` field lists which
 - `unknown_format` / `unknown_lang` / `bad_request` (400)
 - `bad_source` (400) — could not fetch `url` (host not allowed, unreachable, too large)
 - `render_failed` (500) — code parsed but render/rasterization failed (check syntax, language, fn)
