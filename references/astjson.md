@@ -33,7 +33,7 @@ branch is `{ "stmts": [] }`.
 | `process` | rectangle (Process) | `text` | one elementary action: assignment, computation |
 | `io` | parallelogram (Data) | `text` | input/output; start the text with «Input»/«Output» |
 | `call` | rectangle with double side bars (Predefined process) | `text` | a **standalone** subprogram call |
-| `terminal` | oval (Terminator) | — | an explicit function exit: `return` / `raise` |
+| `terminal` | oval (Terminator) | — | an explicit function exit: `return` / `raise`; without `text` the engine labels it "Return" |
 | `if` | diamond (Decision) | `cond`, `then`, `else` | branching |
 | `for` | hexagon (Preparation) | `cond`, `body` (`else` optional) | counted loop; `cond` is the spec |
 | `while` | diamond (pre-condition) | `cond`, `body` (`else` optional) | pre-test loop |

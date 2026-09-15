@@ -84,7 +84,7 @@ stripTypes           strip type annotations from blocks
 returnAsIO           render return as an output block
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
-labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code
+labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
 forFormat             "comma" | "range" | "verbose" — counting-for look
 yes / no              branch labels (Yes/No · Так/Ні · +/−)
 inWord / outWord      input/output words (Input/Output)
