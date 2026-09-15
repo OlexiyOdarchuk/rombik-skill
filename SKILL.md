@@ -28,13 +28,13 @@ rombik auth                                # log in via browser (or: rombik auth
 Then use commands WITHOUT passing the key as an argument (it is read from the config):
 - `rombik render main.py -f pdf -o out.pdf` — file/stdin/`--url` → chart; `--link` — also a temporary public link to the result (valid 1h)
 - `rombik batch src/*.py -f pdf -o project.pdf` — many sources at once
-- `rombik me` · `rombik products` · `rombik topup` · `rombik gift --email … --qty …`
+- `rombik me` · `rombik products` · `rombik topup <id>`
 - `rombik version --json` → `{version,latest,updateAvailable}`; `rombik update` — update the CLI to the latest version
 - Engine options — the same flags as the API `options` field: `--locale`, `--for-format`, `--single-end`, `--strip-types`, `--yes/--no`, `--in-word/--out-word`, `--cap-word/--cap-format`, etc. (full list: `rombik render -h`; custom values need Pro).
 Commands map 1:1 to the HTTP endpoints below; exit codes follow the error `code`. Download & details: https://rombik.app/developers
 
 ## MCP (for clients without a shell)
-Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf), `balance`, `products`, `topup_link`, `gift_credits`. API errors with a `code` come back as isError.
+Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf), `balance`, `products`, `topup_link`. API errors with a `code` come back as isError.
 - **Remote (no install):** add the URL `https://rombik.app/mcp` (Streamable HTTP) to your MCP client — authorization happens by itself via OAuth discovery and a browser consent page, no keys to type.
 - **Local (stdio):** the user installs the CLI once, runs `rombik auth`, and adds to the MCP client config:
 ```json
