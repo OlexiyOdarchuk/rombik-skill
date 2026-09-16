@@ -77,7 +77,7 @@ Toggles, `locale`, `font`, `scale`, `figStart` are free; custom text values
 (your own words) require active Pro on the account (otherwise 402 `pro_required`).
 ```
 # toggles (true/false, default false):
-singleEnd            one shared "End" instead of one per exit
+singleEnd            one shared "End" instead of one per exit. OFF by default and that is the recommended mode: with a shared End an early return inside a loop has to cross the loop back arc
 mainOnlyTerminators  Start/End only for main; subprograms → Entry/Exit
 callAsProcess        a function call as a "Process", not a "Subprogram"
 stripTypes           strip type annotations from blocks
