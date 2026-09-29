@@ -15,11 +15,11 @@ Create a key in your account on the site (shown once).
 
 ## Sign in with rombik — when you build an app for OTHER people
 Do not ask users to paste a key by hand: rombik issues one itself after their consent (OAuth 2.0 + OIDC, any standard library works).
-1. `POST /oauth/register` `{ "client_name": "…", "redirect_uris": ["https://…/callback"], "token_endpoint_auth_method": "none" }` → `client_id` (plus `client_secret` unless the method is `none`).
+1. Publish a client metadata document (CIMD) on YOUR domain: `{ "client_id": "https://your.domain/oauth-client.json", "client_name": "…", "redirect_uris": ["https://…/callback"] }` — `client_id` = the URL of that same document; no registration needed. A confidential client with a secret is issued by the rombik team on request.
 2. Send the user to https://rombik.app/oauth/authorize?response_type=code&client_id=…&redirect_uri=…&scope=openid%20email%20api&state=…&code_challenge=…&code_challenge_method=S256 — they click "Allow" and come back to `redirect_uri` with a `code`.
 3. `POST /oauth/token` (form-urlencoded: grant_type=authorization_code, code, redirect_uri, client_id, code_verifier) → `access_token` is the `rk_…` key for every endpoint below; with scope `openid` you also get an `id_token` (RS256; keys at `GET /oauth/jwks`, identity at `GET /oauth/userinfo`).
 
-PKCE S256 is MANDATORY for a client without a secret; `redirect_uri` must be https (http allowed on localhost) and identical in steps 2 and 3; the code lives 10 minutes and works once. Rendering runs under the plan of the ACCOUNT OWNER who consented (Pro required); they revoke access in their account (the key disappears → 401).
+PKCE S256 is MANDATORY for a CIMD client (it has no secret); `redirect_uri` must be https (http allowed on localhost) and identical in steps 2 and 3; the code lives 10 minutes and works once. Rendering runs under the plan of the ACCOUNT OWNER who consented (Pro required); they revoke access in their account (the key disappears → 401).
 Discovery metadata: https://rombik.app/.well-known/oauth-authorization-server and https://rombik.app/.well-known/openid-configuration
 
 ## Endpoints
