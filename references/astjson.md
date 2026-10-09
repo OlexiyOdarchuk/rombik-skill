@@ -24,7 +24,7 @@ A document is an **array of functions**; each function renders as its own chart:
 
 ### 2. Nodes
 
-General shape: `{ "kind": …, "text"?, "cond"?, "then"?, "else"?, "body"?, "stmts"?, "jump"?, "depth"? }`.
+General shape: `{ "kind": …, "text"?, "cond"?, "then"?, "else"?, "body"?, "stmts"?, "jump"?, "depth"?, "loopOnYes"? }`.
 The `then` / `else` / `body` branches are **block nodes** of the form `{ "stmts": [ … ] }`; an empty
 branch is `{ "stmts": [] }`.
 
@@ -37,7 +37,7 @@ branch is `{ "stmts": [] }`.
 | `if` | diamond (Decision) | `cond`, `then`, `else` | branching |
 | `for` | hexagon (Preparation) | `cond`, `body` (`else` optional) | counted loop; `cond` is the spec |
 | `while` | diamond (pre-condition) | `cond`, `body` (`else` optional) | pre-test loop |
-| `dowhile` | diamond (post-condition) | `cond`, `body` | post-test loop (`else` not supported) |
+| `dowhile` | diamond (post-condition) | `cond`, `body` (`loopOnYes` optional) | post-test loop: body first, then the check (`else` not supported) |
 | `infloop` | loop | `body` | infinite loop |
 | `break` | — | `depth` | exit a loop (only inside a loop) |
 | `continue` | — | `depth` | next iteration (only inside a loop) |
@@ -47,6 +47,11 @@ branch is `{ "stmts": [] }`.
 - `text` — the label inside the shape (`process` / `io` / `call` / `terminal` / `connector`).
 - `cond` — the condition for `if` / `while` / `dowhile`; for `for` it is the **counter spec** in the
   format `var := start, end[, step]` (e.g. `i := 1, n`). It goes in `cond`, **not** `text`.
+- **`cond` of a `dowhile` is the loop's EXIT condition** (like `until` in `repeat … until`): the Yes
+  branch goes on, No returns to the top of the body. `do { … } while (x != 0)` → `"cond": "x = 0"`.
+- `loopOnYes` (`dowhile`) — `true` when `cond` is written as the REPEAT condition: Yes then returns into
+  the loop and No exits. `{"kind":"dowhile","cond":"x ≠ 0","loopOnYes":true,…}` draws the same loop as
+  `"cond":"x = 0"` without the field. Pick one form; never combine `loopOnYes` with an exit condition.
 - `depth` (`break` / `continue`) — how many loops up: `0` — the nearest, `1` — one level higher
   (labeled break). Range: `0 … (number of enclosing loops − 1)`.
 - `jump` (`connector`) — `true` means a goto.
@@ -66,6 +71,19 @@ branch is `{ "stmts": [] }`.
   `terminal` "at the end" if there is no explicit return — the final End oval is added by the engine.
 - **`for/else` and `while/else`** (Python): put the branch that runs on NORMAL loop completion into the
   loop's own `else` field, not as separate nodes after it.
+- **Pick the loop kind by WHERE the source tests the condition**, not by the presence of a counter:
+  - test AFTER the body (`do … while`, `repeat … until`, assembler: label → body → `DEC`/`CMP` →
+    conditional jump back, the `LOOP` instruction) → `dowhile`;
+  - test BEFORE the body (`while`, assembler: a conditional jump out of the loop at its top) → `while`;
+  - `for` — only when the source has a real counted loop (`for i := 1 to n`, `for (i = 0; i < n; i++)`,
+    `for i in range(n)`). Never fold a loop built from jumps into a `for`.
+- **Invent nothing, drop nothing.** Do not introduce variables that are not in the source (no `i` when
+  the counter is the `CX` register). Every instruction that changes data is its own `process`: the
+  counter update (`DEC CX`, `i := i - 1`) stays a separate block inside the loop body.
+- **Assembler and jump-based code.** Registers and memory cells are variables: `MOV AX, 2` → `AX := 2`,
+  `ADD AX, BX` → `AX := AX + BX`, `DEC CX` → `CX := CX - 1`. A conditional jump (`JNZ`, `JE`, `JL`…)
+  becomes a diamond with a meaningful condition (`CX = 0`, not `ZF = 1`); do not draw labels or flags
+  separately. A `CMP`/`TEST` right before the jump is part of the diamond's condition, not its own block.
 - **One `process` = one elementary action.** Do not merge several assignments into one node, and do not
   split one assignment across several.
 - **Do not add Start/End nodes and do not write Yes/No** — the engine does that.
@@ -119,6 +137,22 @@ The engine validates the tree and returns human-readable errors — fix and retr
 { "kind": "while", "cond": "b <> 0",
   "body": { "stmts": [ { "kind": "process", "text": "t := b" } ] } }
 ```
+
+**Post-test loop (`dowhile`).** Assembler: the counter is decremented in the body, the jump back is last.
+```
+      MOV CX, 5
+next: ADD AX, BX
+      DEC CX
+      JNZ next
+```
+```json
+{ "kind": "process", "text": "CX := 5" },
+{ "kind": "dowhile", "cond": "CX = 0",
+  "body": { "stmts": [
+    { "kind": "process", "text": "AX := AX + BX" },
+    { "kind": "process", "text": "CX := CX - 1" } ] } }
+```
+The same loop with the repeat condition, as in the code (`JNZ` — "while not zero"): `"cond": "CX ≠ 0", "loopOnYes": true`.
 
 **A description in words → astJSON.** «Read a number n. If it is even, print “even”, otherwise “odd”.»
 ```json

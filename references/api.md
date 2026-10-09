@@ -83,6 +83,7 @@ callAsProcess        a function call as a "Process", not a "Subprogram"
 stripTypes           strip type annotations from blocks
 returnAsIO           render return as an output block
 forAsWhile           for without a hexagon: "i = 0" block, "i < n" decision, body, "i = i + 1" block
+doWhileLoopOnYes     do…while with the condition as written: Yes loops back, No exits (by default the diamond shows the exit condition: Yes goes on). For C/C++, Java, C#, JS/TS, PHP; in lang "rombik" use the node field loopOnYes
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
