@@ -97,6 +97,7 @@ forEachWord           foreach separator (∈)
 capWord               caption word (Figure)
 capFormat             caption template: {word} {num} — {text}
 figStart              which number to start figures from (integer)
+noCaption             no "Figure N — …" caption under the chart (structograms too)
 ```
 Example: {"code":"…","lang":"python","options":{"locale":"en","yes":"Yes","no":"No","singleEnd":true,"stripTypes":true}}
 In the CLI these are flags: --locale, --for-format, --single-end, --yes/--no, --strip-types … (full list: rombik render -h).
