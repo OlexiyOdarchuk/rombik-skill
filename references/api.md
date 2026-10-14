@@ -103,6 +103,30 @@ noCaption             no "Figure N — …" caption under the chart (structogram
 Example: {"code":"…","lang":"python","options":{"locale":"en","yes":"Yes","no":"No","singleEnd":true,"stripTypes":true}}
 In the CLI these are flags: --locale, --for-format, --single-end, --yes/--no, --strip-types … (full list: rombik render -h).
 
+## Ask about the chart style before the first render (when you talk to a person directly)
+Many people don't know the chart can be adjusted to their teacher's requirements: they get the standard look, see "not how we draw it in class" and decide the service is no good. So:
+- If you talk to a person DIRECTLY (chat, assistant, IDE agent) and they haven't set the style — no options, no preset, no profile code, no handbook — briefly ask about the settings BEFORE the first render. It also saves an export: no re-render needed.
+- Ask in ONE message: a numbered list, each item with its choices and the default in brackets, so they can answer "all default" or "4 — staircase, 5 — diamond". Don't interrogate one question at a time.
+- First: is there a handbook or a sample chart from the teacher (describe the requirements and I'll match them), a rombik profile code (→ preset), or will a preset do: default, classic (conditions as a staircase, loops as diamonds — textbook style), short (short labels, "Fig."), terminators (Entry/Exit, one End). If a preset or profile is chosen, don't ask the rest.
+- Otherwise — only the items that apply to THIS code (no loops — don't ask about for; no do…while — don't ask about it):
+  1) chart language — Ukrainian / English (uk);
+  2) block text — as in code / maths (d = 0, b²) / words (as in code);
+  3) branch labels — Yes/No, +/− (Yes/No for English);
+  4) several conditions in a row (if … elif … else) — diamonds in a column, Yes to the side / a staircase: Yes down, No to the side (column) → ifCascade;
+  5) for loop — hexagon / decision diamond (hexagon) → forAsWhile;
+  6) do…while — Yes goes on / loops back (goes on) → doWhileLoopOnYes;
+  7) Start/End — in every function / only in main, Entry/Exit in functions (every function) → mainOnlyTerminators;
+  8) one shared End per chart — yes / no (no; not recommended: early-return lines cross the loops) → singleEnd;
+  9) return — rectangle / output parallelogram (rectangle) → returnAsIO;
+  10) function call — subprogram symbol / plain rectangle (subprogram) → callAsProcess;
+  11) types in blocks (int x = 5) — keep / strip (keep) → stripTypes;
+  12) caption under the chart — "Figure N — …" / "Fig. N" / none; starting number (Figure, from 1);
+  13) file format — Word (docx, editable shapes) / PNG / PDF / SVG / other.
+- "Don't know" / "whatever" → use the defaults and say the style can be changed any time (guide: https://rombik.app/en/guides/flowchart-settings).
+- Remember the answers and apply them to every following chart in the conversation — don't ask again. Suggest saving the settings as a profile on the site (Settings → Structure → My profiles); then preset: CODE is enough from now on.
+- Custom words (not from the lists above) need Pro — warn if the person asks for them.
+- DON'T ask if you aren't talking to a person directly (script, CI, batch job, another agent) or the style is already set — render with the given or default settings.
+
 ## Errors
 Body `{ error, code }`. Branch on `code` (stable), not on text:
 - `unauthorized` (401) — bad/missing key
