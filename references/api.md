@@ -31,7 +31,7 @@ JSON body: `{ "code": "...", "lang": "python", "format": "svg" }`
 - `mode`: empty — flowchart (default); `nsd` — Nassi-Shneiderman structogram (nested boxes, no arrows) in any format.
 - `split` (default true for docx, PDF & Typst document; for svg/png/jpeg/webp/gif/html/excalidraw — with explicit true): split tall charts into parts with А/Б connectors. For docx/pdf/typst these are separate pages (pdf is multi-page); for svg/png/excalidraw — parts on one canvas. `false` — keep continuous (one sheet)
 - `url`: instead of `code` — a link to a file (allowlist: raw.githubusercontent.com, gist, gitlab.com, bitbucket.org, codeberg.org; `github.com/.../blob/...` auto→raw). Language is inferred from the extension.
-- optional: `fn` (only the function with this name), `scale` (PNG zoom), `fragment` (Typst fragment), `font`, `options` (object — full list in the «Engine options» section below)
+- optional: `fn` (only the function with this name), `scale` (PNG zoom), `fragment` (Typst fragment), `font`, `options` (object — full list in the «Engine options» section below), `preset` (default | classic — condition chains as a staircase and loops as diamonds, textbook style | short | terminators, or the code of the user's profile from a link /app?m=CODE; options apply on top; unknown → 400 `unknown_preset`)
 - `options` with custom words/caption/for-format require an account with active **Pro** (otherwise 402 `pro_required`). Toggles, `locale`, `font`, `scale`, `figStart` are free.
 - `?json=1` → JSON response `{ format, encoding (utf-8|base64), content, creditsLeft }` instead of a file (`creditsLeft` — exports left this month)
 - Another format of the same file doesn't count again.

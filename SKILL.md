@@ -30,7 +30,7 @@ Then use commands WITHOUT passing the key as an argument (it is read from the co
 - `rombik batch src/*.py -f pdf -o project.pdf` — many sources at once
 - `rombik me` · `rombik products` · `rombik topup <id>`
 - `rombik version --json` → `{version,latest,updateAvailable}`; `rombik update` — update the CLI to the latest version
-- Engine options — the same flags as the API `options` field: `--locale`, `--for-format`, `--single-end`, `--strip-types`, `--yes/--no`, `--in-word/--out-word`, `--cap-word/--cap-format`, etc. (full list: `rombik render -h`; custom values need Pro).
+- Engine options — the same flags as the API `options` field: `--locale`, `--for-format`, `--single-end`, `--strip-types`, `--yes/--no`, `--in-word/--out-word`, `--cap-word/--cap-format`, etc. (full list: `rombik render -h`; custom values need Pro). A style preset — `--preset classic|short|terminators|default` or the code of a saved profile; option flags apply on top.
 Commands map 1:1 to the HTTP endpoints below; exit codes follow the error `code`. Download & details: https://rombik.app/developers
 
 ## MCP (for clients without a shell)
