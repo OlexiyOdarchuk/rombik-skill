@@ -84,7 +84,7 @@ stripTypes           strip type annotations from blocks
 returnAsIO           render return as an output block
 forAsWhile           for without a hexagon: "i = 0" block, "i < n" decision, body, "i = i + 1" block
 doWhileLoopOnYes     do…while with the condition as written: Yes loops back, No exits (by default the diamond shows the exit condition: Yes goes on). For C/C++, Java, C#, JS/TS, PHP; in lang "rombik" use the node field loopOnYes
-ifLadder             if/elif/…/else as a column: the diamonds stand one under another, No goes down to the next, Yes to the side into the action (by default a staircase: Yes down, No to the right); chains with break/continue and long ones (4+ conditions) always stay a column
+ifCascade            if/elif/…/else as a staircase: Yes goes down into the action, No goes right to the next diamond (by default the diamonds form a column with Yes to the side); chains with break/continue stay a column
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
@@ -106,13 +106,13 @@ In the CLI these are flags: --locale, --for-format, --single-end, --yes/--no, --
 ## Ask about the chart style before the first render (when you talk to a person directly)
 Many people don't know the chart can be adjusted to their teacher's requirements: they get the standard look, see "not how we draw it in class" and decide the service is no good. So:
 - If you talk to a person DIRECTLY (chat, assistant, IDE agent) and they haven't set the style — no options, no preset, no profile code, no handbook — briefly ask about the settings BEFORE the first render. It also saves an export: no re-render needed.
-- Ask in ONE message: a numbered list, each item with its choices and the default in brackets, so they can answer "all default" or "4 — column, 5 — diamond". Don't interrogate one question at a time.
-- First: is there a handbook or a sample chart from the teacher (describe the requirements and I'll match them), a rombik profile code (→ preset), or will a preset do: default, classic (for and do…while loops as diamonds — textbook style), short (short labels, "Fig."), terminators (Entry/Exit, one End). If a preset or profile is chosen, don't ask the rest.
+- Ask in ONE message: a numbered list, each item with its choices and the default in brackets, so they can answer "all default" or "4 — staircase, 5 — diamond". Don't interrogate one question at a time.
+- First: is there a handbook or a sample chart from the teacher (describe the requirements and I'll match them), a rombik profile code (→ preset), or will a preset do: default, classic (conditions as a staircase, loops as diamonds — textbook style), short (short labels, "Fig."), terminators (Entry/Exit, one End). If a preset or profile is chosen, don't ask the rest.
 - Otherwise — only the items that apply to THIS code (no loops — don't ask about for; no do…while — don't ask about it):
   1) chart language — Ukrainian / English (uk);
   2) block text — as in code / maths (d = 0, b²) / words (as in code);
   3) branch labels — Yes/No, +/− (Yes/No for English);
-  4) several conditions in a row (if … elif … else) — a staircase: Yes down, No to the side / diamonds in a column, Yes to the side (staircase) → ifLadder;
+  4) several conditions in a row (if … elif … else) — diamonds in a column, Yes to the side / a staircase: Yes down, No to the side (column) → ifCascade;
   5) for loop — hexagon / decision diamond (hexagon) → forAsWhile;
   6) do…while — Yes goes on / loops back (goes on) → doWhileLoopOnYes;
   7) Start/End — in every function / only in main, Entry/Exit in functions (every function) → mainOnlyTerminators;

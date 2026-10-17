@@ -34,7 +34,7 @@ Then use commands WITHOUT passing the key as an argument (it is read from the co
 Commands map 1:1 to the HTTP endpoints below; exit codes follow the error `code`. Download & details: https://rombik.app/developers
 
 ## MCP (for clients without a shell)
-Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf; chart style — an `options` object with the same keys as the API, e.g. `{"forAsWhile": true}`), `balance`, `products`, `topup_link`. API errors with a `code` come back as isError.
+Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf; chart style — an `options` object with the same keys as the API, e.g. `{"ifCascade": true}`), `balance`, `products`, `topup_link`. API errors with a `code` come back as isError.
 - **Remote (no install):** add the URL `https://rombik.app/mcp` (Streamable HTTP) to your MCP client — authorization happens by itself via OAuth discovery and a browser consent page, no keys to type.
 - **Local (stdio):** the user installs the CLI once, runs `rombik auth`, and adds to the MCP client config:
 ```json
