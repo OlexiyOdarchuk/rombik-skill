@@ -86,6 +86,7 @@ forAsWhile           for without a hexagon: "i = 0" block, "i < n" decision, bod
 doWhileLoopOnYes     do…while with the condition as written: Yes loops back, No exits (by default the diamond shows the exit condition: Yes goes on). For C/C++, Java, C#, JS/TS, PHP; in lang "rombik" use the node field loopOnYes
 ifCascade            if/elif/…/else as a staircase: Yes goes down into the action, No goes right to the next diamond (by default the diamonds form a column with Yes to the side); chains with break/continue stay a column
 arrowsUpOnly         arrowheads only on lines going up (loop returns); lines going down or sideways have none (by default every line entering a block has one)
+jumpLines            a labeled break/continue that leaves several loops — as a line; by default as connectors: a circle "A" where the jump happens and where it lands
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)

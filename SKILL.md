@@ -1,6 +1,6 @@
 ---
 name: rombik-api
-description: Generates ДСТУ (GOST 19.701-90) algorithm flowcharts from source code (Python, C++, C, Java, C#, Pascal, JavaScript, TypeScript, PHP, Go) via the rombik HTTP API. Use it when you need to turn code into a flowchart or Nassi-Shneiderman structogram in docx/visio/drawio/typst/excalidraw/svg/png/jpeg/webp/gif/html/pdf (and an animated GIF).
+description: Generates ДСТУ (GOST 19.701-90) algorithm flowcharts from source code (Python, C++, C, Java, C#, Pascal, JavaScript, TypeScript, PHP, Go, Rust) via the rombik HTTP API. Use it when you need to turn code into a flowchart or Nassi-Shneiderman structogram in docx/visio/drawio/typst/excalidraw/svg/png/jpeg/webp/gif/html/pdf (and an animated GIF).
 ---
 
 # rombik — code → ДСТУ flowchart
