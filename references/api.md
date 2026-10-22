@@ -85,6 +85,7 @@ returnAsIO           render return as an output block
 forAsWhile           for without a hexagon: "i = 0" block, "i < n" decision, body, "i = i + 1" block
 doWhileLoopOnYes     do…while with the condition as written: Yes loops back, No exits (by default the diamond shows the exit condition: Yes goes on). For C/C++, Java, C#, JS/TS, PHP; in lang "rombik" use the node field loopOnYes
 ifCascade            if/elif/…/else as a staircase: Yes goes down into the action, No goes right to the next diamond (by default the diamonds form a column with Yes to the side); chains with break/continue stay a column
+arrowsUpOnly         arrowheads only on lines going up (loop returns); lines going down or sideways have none (by default every line entering a block has one)
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
@@ -115,13 +116,14 @@ Many people don't know the chart can be adjusted to their teacher's requirements
   4) several conditions in a row (if … elif … else) — diamonds in a column, Yes to the side / a staircase: Yes down, No to the side (column) → ifCascade;
   5) for loop — hexagon / decision diamond (hexagon) → forAsWhile;
   6) do…while — Yes goes on / loops back (goes on) → doWhileLoopOnYes;
-  7) Start/End — in every function / only in main, Entry/Exit in functions (every function) → mainOnlyTerminators;
-  8) one shared End per chart — yes / no (no; not recommended: early-return lines cross the loops) → singleEnd;
-  9) return — rectangle / output parallelogram (rectangle) → returnAsIO;
-  10) function call — subprogram symbol / plain rectangle (subprogram) → callAsProcess;
-  11) types in blocks (int x = 5) — keep / strip (keep) → stripTypes;
-  12) caption under the chart — "Figure N — …" / "Fig. N" / none; starting number (Figure, from 1);
-  13) file format — Word (docx, editable shapes) / PNG / PDF / SVG / other.
+  7) arrowheads — on every line entering a block / only on lines going up, as some handbooks draw (every entry) → arrowsUpOnly;
+  8) Start/End — in every function / only in main, Entry/Exit in functions (every function) → mainOnlyTerminators;
+  9) one shared End per chart — yes / no (no; not recommended: early-return lines cross the loops) → singleEnd;
+  10) return — rectangle / output parallelogram (rectangle) → returnAsIO;
+  11) function call — subprogram symbol / plain rectangle (subprogram) → callAsProcess;
+  12) types in blocks (int x = 5) — keep / strip (keep) → stripTypes;
+  13) caption under the chart — "Figure N — …" / "Fig. N" / none; starting number (Figure, from 1);
+  14) file format — Word (docx, editable shapes) / PNG / PDF / SVG / other.
 - "Don't know" / "whatever" → use the defaults and say the style can be changed any time (guide: https://rombik.app/en/guides/flowchart-settings).
 - Remember the answers and apply them to every following chart in the conversation — don't ask again. Suggest saving the settings as a profile on the site (Settings → Structure → My profiles); then preset: CODE is enough from now on.
 - Custom words (not from the lists above) need Pro — warn if the person asks for them.
