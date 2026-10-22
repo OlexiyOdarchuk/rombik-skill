@@ -52,7 +52,7 @@ curl -X POST https://rombik.app/api/v1/render \
   -d '{"code":"def f(a):\n    return a*2","lang":"python","format":"svg"}' -o out.svg
 ```
 
-- `lang`: python | cpp | c | java | csharp | pascal | javascript | typescript | php | go | rombik (Pro: `code` carries a ready astJSON tree instead of source code; spec in the format section below)
+- `lang`: python | cpp | c | java | csharp | pascal | javascript | typescript | php | go | rust | rombik (Pro: `code` carries a ready astJSON tree instead of source code; spec in the format section below)
 - `format`: docx | visio | drawio | typst | excalidraw | svg | png | jpeg | webp | gif | gif_anim | html | pdf | json | poster (svg by default). jpeg/webp/gif — the same raster as png (webp is lossless); gif_anim — an animated GIF, the chart draws itself block by block; html — a self-contained page "chart + code with line numbers"; with `fragment: true` — just a `<div>` with inline SVG to embed in an existing page. poster — code on the left, chart on the right, as one shareable image (styling goes in the poster block; works together with mode:"nsd" and options.locale). `docx` — Word with native shapes; `visio` — .vsdx native shapes; `drawio` — editable diagrams.net; `json` — raw Diagram geometry.
 - `mode`: empty — flowchart (default); `nsd` — Nassi-Shneiderman structogram in any format
 
