@@ -6,7 +6,7 @@ branches, loops) and the **node text**. The standard framing is added automatica
 around the function, Yes/No labels on diamonds, the shapes themselves, arrow direction, the figure
 numbering. Do **not** write those by hand.
 
-Use the format when: (a) the language isn't auto-parsed (assembler, Rust, pseudocode…), or (b) there
+Use the format when: (a) the language isn't auto-parsed (assembler, pseudocode…), or (b) there
 is no code at all — only a verbal description. Paste the resulting tree into the rombik editor with the
 «rombik» language selected (a Pro feature), or send it via the API with `lang:"rombik"`.
 

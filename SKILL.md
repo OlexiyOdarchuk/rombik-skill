@@ -1,6 +1,6 @@
 ---
 name: rombik-api
-description: Generates ДСТУ (GOST 19.701-90) algorithm flowcharts from source code (Python, C++, C, Java, C#, Pascal, JavaScript, TypeScript, PHP, Go, Rust) via the rombik HTTP API. Use it when you need to turn code into a flowchart or Nassi-Shneiderman structogram in docx/visio/drawio/typst/excalidraw/svg/png/jpeg/webp/gif/html/pdf (and an animated GIF).
+description: Generates ДСТУ (GOST 19.701-90) algorithm flowcharts from source code (Python, C++, C, Java, C#, Pascal, JavaScript, TypeScript, PHP, Go, Rust) via the rombik MCP server, CLI or HTTP API. Use it when you need to turn code into a flowchart or Nassi-Shneiderman structogram in docx/visio/drawio/typst/excalidraw/svg/png/jpeg/webp/gif/html/pdf (and an animated GIF).
 ---
 
 # rombik — code → ДСТУ flowchart
@@ -13,13 +13,22 @@ Canonical, always-current version of this skill: https://rombik.app/api/v1/skill
 
 ## Ways to use it (pick one)
 
-1. **CLI** (recommended for agents with a shell) — the key stays in a config file and never
-   enters the model context.
-2. **MCP server** (for MCP-capable clients without a shell) — the same binary, tools available natively.
+1. **MCP server** (recommended) — connect `https://rombik.app/mcp`, no install: the tools show up
+   natively and authorization happens in the browser, the key never enters the model context.
+2. **CLI** — if MCP can't be connected but you have a shell; the key stays in a config file.
 3. **Raw HTTP API** — when neither is possible. See [references/api.md](references/api.md).
 
-## CLI (recommended for agents)
-Instead of raw HTTP calls with the key in the prompt — install the `rombik` CLI; it keeps the key in a config file (`~/.config/rombik`), so the key never enters the model context:
+## MCP (recommended for agents)
+The simplest path is to connect rombik as an MCP server: the tools show up in the agent natively and the key never enters the model context. If MCP can't be connected — fall back to the CLI (section below).
+Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf; chart style — an `options` object with the same keys as the API, e.g. `{"ifCascade": true}`), `balance`, `products`, `topup_link`. API errors with a `code` come back as isError.
+- **Remote (no install):** add the URL `https://rombik.app/mcp` (Streamable HTTP) to your MCP client — authorization happens by itself via OAuth discovery and a browser consent page, no keys to type.
+- **Local (stdio):** the user installs the CLI once (see below), runs `rombik auth`, and adds to the MCP client config:
+```json
+{ "mcpServers": { "rombik": { "command": "rombik", "args": ["mcp"] } } }
+```
+
+## CLI (if MCP can't be connected)
+When there is no MCP client or the server won't connect but you have a shell, install the `rombik` CLI instead of making raw HTTP calls with the key in the prompt: it keeps the key in a config file (`~/.config/rombik`), so the key never enters the model context:
 ```bash
 curl -fsSL https://rombik.app/install.sh | sh   # macOS/Linux → ~/.local/bin
 # Windows (PowerShell): irm https://rombik.app/install.ps1 | iex
@@ -32,14 +41,6 @@ Then use commands WITHOUT passing the key as an argument (it is read from the co
 - `rombik version --json` → `{version,latest,updateAvailable}`; `rombik update` — update the CLI to the latest version
 - Engine options — the same flags as the API `options` field: `--locale`, `--for-format`, `--single-end`, `--strip-types`, `--yes/--no`, `--in-word/--out-word`, `--cap-word/--cap-format`, etc. (full list: `rombik render -h`; custom values need Pro). A style preset — `--preset classic|short|terminators|default` or the code of a saved profile; option flags apply on top.
 Commands map 1:1 to the HTTP endpoints below; exit codes follow the error `code`. Download & details: https://rombik.app/developers
-
-## MCP (for clients without a shell)
-Two ways in; the tools are the same: `render_flowchart` (code|url → PNG image, or jpeg/webp/gif/gif_anim/svg/html/typst/excalidraw/pdf; chart style — an `options` object with the same keys as the API, e.g. `{"ifCascade": true}`), `balance`, `products`, `topup_link`. API errors with a `code` come back as isError.
-- **Remote (no install):** add the URL `https://rombik.app/mcp` (Streamable HTTP) to your MCP client — authorization happens by itself via OAuth discovery and a browser consent page, no keys to type.
-- **Local (stdio):** the user installs the CLI once, runs `rombik auth`, and adds to the MCP client config:
-```json
-{ "mcpServers": { "rombik": { "command": "rombik", "args": ["mcp"] } } }
-```
 
 ## HTTP API — quick start
 
@@ -61,7 +62,7 @@ limits): [references/api.md](references/api.md).
 
 ## No supported language, or no code at all?
 
-For languages rombik does not auto-parse (assembler, Rust, pseudocode…) or for a verbal
+For languages rombik does not auto-parse (assembler, pseudocode…) or for a verbal
 description of an algorithm, build a compact JSON control-flow tree (**astJSON**) and send it
 with `lang:"rombik"` (Pro). The full specification with modeling rules and examples:
 [references/astjson.md](references/astjson.md).
