@@ -33,6 +33,15 @@ def find(lines: list[str], prefix: str, start: int = 0) -> int:
     sys.exit(f"sync: у джерелі не знайдено якір {prefix!r} — структура skill.md змінилася, онови scripts/sync.py")
 
 
+def section(lines: list[str], prefix: str) -> str:
+    """Розділ від заголовка `prefix` до наступного `## ` — незалежно від порядку розділів у джерелі."""
+    i = find(lines, prefix)
+    j = i + 1
+    while j < len(lines) and not lines[j].startswith("## "):
+        j += 1
+    return "".join(lines[i:j]).rstrip() + "\n"
+
+
 def first_line(lines: list[str], prefix: str, lo: int, hi: int) -> str:
     for i in range(lo, hi):
         if lines[i].startswith(prefix):
@@ -49,14 +58,15 @@ def main() -> None:
     i_auth = find(src, "## Authorization")
     i_cli = find(src, "## CLI")
     i_mcp = find(src, "## MCP")
+    i_tools = min(i_cli, i_mcp)                        # перший із двох розділів (MCP/CLI)
     i_endpoints = find(src, "## Endpoints")
     i_astjson = find(src, "## The rombik format specification")
     i_me = find(src, "### GET /me")
     i_options = find(src, "## Engine options")
 
     frontmatter = "".join(src[: fm_end + 1])
-    cli_block = "".join(src[i_cli:i_mcp]).rstrip() + "\n"
-    mcp_block = "".join(src[i_mcp:i_endpoints]).rstrip() + "\n"
+    cli_block = section(src, "## CLI")
+    mcp_block = section(src, "## MCP")
     lang_bullet = first_line(src, "- `lang`:", i_endpoints, i_astjson)
     format_bullet = first_line(src, "- `format`:", i_endpoints, i_astjson)
 
@@ -70,7 +80,7 @@ def main() -> None:
         "# rombik HTTP API — full endpoint reference\n\n"
         "Auto-generated from https://rombik.app/api/v1/skill.md — do not edit by hand\n"
         "(see scripts/sync.py).\n\n"
-        + "".join(src[i_base:i_cli])
+        + "".join(src[i_base:i_tools])
         + "".join(src[i_endpoints:i_astjson])
         + "".join(src[i_me:i_options])
         + "".join(src[i_options:])
@@ -97,13 +107,13 @@ Canonical, always-current version of this skill: https://rombik.app/api/v1/skill
 
 ## Ways to use it (pick one)
 
-1. **CLI** (recommended for agents with a shell) — the key stays in a config file and never
-   enters the model context.
-2. **MCP server** (for MCP-capable clients without a shell) — the same binary, tools available natively.
+1. **MCP server** (recommended) — connect `https://rombik.app/mcp`, no install: the tools show up
+   natively and authorization happens in the browser, the key never enters the model context.
+2. **CLI** — if MCP can't be connected but you have a shell; the key stays in a config file.
 3. **Raw HTTP API** — when neither is possible. See [references/api.md](references/api.md).
 
-{cli_block}
 {mcp_block}
+{cli_block}
 ## HTTP API — quick start
 
 Base: `https://rombik.app/api/v1`. Auth header: `X-API-Key: rk_...`
@@ -119,7 +129,7 @@ limits): [references/api.md](references/api.md).
 
 ## No supported language, or no code at all?
 
-For languages rombik does not auto-parse (assembler, Rust, pseudocode…) or for a verbal
+For languages rombik does not auto-parse (assembler, pseudocode…) or for a verbal
 description of an algorithm, build a compact JSON control-flow tree (**astJSON**) and send it
 with `lang:"rombik"` (Pro). The full specification with modeling rules and examples:
 [references/astjson.md](references/astjson.md).
