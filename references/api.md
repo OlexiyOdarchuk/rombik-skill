@@ -100,7 +100,7 @@ entryText / exitText  subprogram terminators (Entry/Exit)
 returnWord            word before return (Return)
 forEachWord           foreach separator (∈)
 capWord               caption word (Figure)
-capFormat             caption template: {word} {num} — {text}
+capFormat             caption template: {word} {num} — {name} ({name}/{text} is the function name; "{word} {num}" is the number only)
 figStart              which number to start figures from (integer)
 noCaption             no "Figure N — …" caption under the chart (structograms too)
 ```
