@@ -89,6 +89,7 @@ arrowsUpOnly         arrowheads only on lines going up or right-to-left (loop re
 jumpLines            a labeled break/continue that leaves several loops — as a line; by default as connectors: a circle "A" where the jump happens and where it lands
 forLabels            Yes/No labels on the exits of the for-loop hexagon (Yes into the body, No out) — as ISO 5807 asks for every multi-exit symbol; off by default, like most handbooks
 mergeOffset          offset branch merges: the right branch of an if/else joins the axis below the left one — as ISO 5807 asks for junctions; off by default, handbooks merge into one point
+arrowsAtBlocks       no arrowhead where one line joins another — only where the joined line enters a block (by default a line going up or right-to-left also has one where it joins, ISO 5807)
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
@@ -119,7 +120,7 @@ Many people don't know the chart can be adjusted to their teacher's requirements
   4) several conditions in a row (if … elif … else) — diamonds in a column, Yes to the side / a staircase: Yes down, No to the side (column) → ifCascade;
   5) for loop — hexagon / decision diamond (hexagon) → forAsWhile;
   6) do…while — Yes goes on / loops back (goes on) → doWhileLoopOnYes;
-  7) arrowheads — on every line entering a block / only on lines going up or left, as some handbooks draw (every entry) → arrowsUpOnly;
+  7) arrowheads — on every line entering a block / only on lines going up or left, as some handbooks draw (every entry) → arrowsUpOnly; where lines join — an arrowhead at the join / only at the block the line leads to (at the join) → arrowsAtBlocks;
   8) Start/End — in every function / only in main, Entry/Exit in functions (every function) → mainOnlyTerminators;
   9) one shared End per chart — yes / no (no; not recommended: early-return lines cross the loops) → singleEnd;
   10) return — rectangle / output parallelogram (rectangle) → returnAsIO;
