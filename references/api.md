@@ -11,7 +11,7 @@ Header (either of the two):
 - `X-API-Key: rk_...`
 - `Authorization: Bearer rk_...`
 
-Create a key in your account on the site (shown once).
+Create a key on the site: https://rombik.app/account?tab=connections (shown once).
 
 ## Sign in with rombik — when you build an app for OTHER people
 Do not ask users to paste a key by hand: rombik issues one itself after their consent (OAuth 2.0 + OIDC, any standard library works).
