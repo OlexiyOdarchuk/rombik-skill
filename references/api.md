@@ -90,6 +90,7 @@ jumpLines            a labeled break/continue that leaves several loops — as a
 forLabels            Yes/No labels on the exits of the for-loop hexagon (Yes into the body, No out) — as ISO 5807 asks for every multi-exit symbol; off by default, like most handbooks
 mergeOffset          offset branch merges: the right branch of an if/else joins the axis below the left one — as ISO 5807 asks for junctions; off by default, handbooks merge into one point
 arrowsAtBlocks       no arrowhead where one line joins another — only where the joined line enters a block (by default a line going up or right-to-left also has one where it joins, ISO 5807)
+blockNumbers         a number on every block, in a gap of its top outline (the ISO 5807 symbol identifier), to refer to blocks in the text: in the order the algorithm runs, the Yes branch before No; Start/End are counted but not numbered
 # text / numeric:
 locale                "uk" | "en" — language of chart inserts
 labels                "code" | "math" | "words" — block text: as code / math (d = 0, b²) / words (d equals 0); teachers often require no code; not applied to lang "rombik" (the author writes the text)
@@ -126,6 +127,7 @@ Many people don't know the chart can be adjusted to their teacher's requirements
   10) return — rectangle / output parallelogram (rectangle) → returnAsIO;
   11) function call — subprogram symbol / plain rectangle (subprogram) → callAsProcess;
   12) types in blocks (int x = 5) — keep / strip (keep) → stripTypes;
+  12a) block numbers (in a gap of the outline, top left, to refer to blocks in the text) — yes / no (no) → blockNumbers;
   13) caption under the chart — "Figure N — …" / "Fig. N" / none; starting number (Figure, from 1);
   14) file format — Word (docx, editable shapes) / PNG / PDF / SVG / other.
 - "Don't know" / "whatever" → use the defaults and say the style can be changed any time (guide: https://rombik.app/en/guides/flowchart-settings).
